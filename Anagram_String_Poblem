@@ -1,0 +1,40 @@
+Problem :- Two words are anagrams of one another if their letters can be rearranged to form the other word.
+
+Given a string, split it into two contiguous substrings of equal length. Determine the minimum number of characters to change to make the two substrings into anagrams of one another.
+
+Example s = "abccde"
+
+Break s into two parts: 'abc' and 'cde'. Note that all letters have been used, the substrings are contiguous and their lengths are equal. Now you can change 'a' and 'b' in the first substring to 'd' and 'e' to have 'dec' and 'cde' which are anagrams. Two changes were necessary.
+
+
+solution :- 
+
+public static int anagram(String s) {
+    // Write your code here
+        int length = s.length();
+        if(length%2!=0){
+            return -1;
+        }
+        Map<Character,Integer> map1 = new HashMap<>();
+        for(int i=0; i<(length/2);i++){
+            int x = map1.getOrDefault(s.charAt(i),0);
+            map1.put(s.charAt(i), x+1);
+        }  
+        Map<Character,Integer> map2 = new HashMap<>();
+        for(int i=length/2; i<(length);i++){
+            int x = map2.getOrDefault(s.charAt(i),0);
+            map2.put(s.charAt(i), x+1);
+        }  
+        int count = 0;
+        for(char key: map1.keySet()){
+            if(map2.get(key)==null){
+                count += map1.get(key);
+            }
+            if(map2.get(key)!=null){
+                if(map1.get(key)>map2.get(key)){
+                    count += map1.get(key) - map2.get(key); 
+                }
+            }   
+        }
+        return count;
+    }
